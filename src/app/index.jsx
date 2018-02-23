@@ -6,6 +6,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Entry from "./entry";
+import History from "./history";
 import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
 
 import Player, {YOUTUBE_REGEX} from '../player';
@@ -109,13 +110,7 @@ class App extends React.Component {
                         moveDown={this.props.moveURL.bind(undefined, i, Math.min(Math.max(urls.length - 1, 0), i + 1))}/>;
         })}
       </div>
-      <div className="history">
-        <h3>History</h3>
-        <button onClick={this.props.clearHistory}><i className="fas fa-trash"/>&nbsp;Clear</button>
-        <ol>
-          {this.props.history.map((u, i) => <li key={i}><a href={u}>{u}</a></li>)}
-        </ol>
-      </div>
+      <History clearHistory={this.props.clearHistory} history={this.props.history}/>
     </div>;
   }
 }
