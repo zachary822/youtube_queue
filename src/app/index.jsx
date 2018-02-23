@@ -35,7 +35,8 @@ class App extends React.Component {
     });
   }
 
-  addURL() {
+  addURL(e) {
+    e.preventDefault();
     if (YOUTUBE_REGEX.test(this.state.url)) {
       this.props.addURL(this.state.url);
       this.setState({url: ''});
@@ -80,9 +81,11 @@ class App extends React.Component {
     return <div>
       <div className="queue">
         <div className="url-input">
-          <label>URL:</label>
-          <input type="text" value={this.state.url} onChange={this.setURL.bind(this)}/>
-          <button onClick={this.addURL.bind(this)}><i className="fas fa-plus"/>&nbsp;Add</button>
+          <form onSubmit={this.addURL.bind(this)}>
+            <label htmlFor="url">URL:</label>
+            <input type="text" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)} autoFocus/>
+            <button type="submit"><i className="fas fa-plus"/>&nbsp;Add</button>
+          </form>
         </div>
         {this.state.showError ?
           <div>Not a Valid YouTube URL</div> :
@@ -97,7 +100,7 @@ class App extends React.Component {
                    moveDown={this.props.moveURL.bind(undefined, 0, Math.min(Math.max(urls.length - 1, 0), 1))}/>
           </div> :
           null}
-        <h3>Queue</h3>
+        <h3 className="queue-title">Queue</h3>
         {urls.slice(1).map((u, i) => {
           i += 1;
           return <Entry url={u} key={u + i} position={i}
