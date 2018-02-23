@@ -24,7 +24,7 @@ class Entry extends React.Component {
     return <div><a href={url}>{url}</a>
       <button ref={(c) => {
         this.copy = c;
-      }}><i className="fas fa-trash"/></button>
+      }}><i className="fas fa-clipboard"/></button>
     </div>;
   }
 }
@@ -37,7 +37,7 @@ class History extends React.Component {
   render() {
     return <div className="history">
       <h3>History</h3>
-      <button onClick={this.props.clearHistory}><i className="fas fa-clipboard"/>&nbsp;Clear</button>
+      <button onClick={this.props.clearHistory}><i className="fas fa-trash"/>&nbsp;Clear</button>
       <ol>
         {this.props.history.map((u, i) => <li key={i}><Entry url={u}/></li>)}
       </ol>
