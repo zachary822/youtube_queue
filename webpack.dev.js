@@ -11,6 +11,7 @@ module.exports = merge(common, {
     // serve index.html in place of 404 responses to allow HTML5 history
     historyApiFallback: true
   },
+  mode: 'development',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
   ]

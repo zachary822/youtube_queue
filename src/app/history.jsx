@@ -36,7 +36,7 @@ Entry.propTypes = {
 class History extends React.Component {
   render() {
     return <div className="history">
-      <h3>History</h3>
+      <h1>History</h1>
       <button onClick={this.props.clearHistory}><i className="fas fa-trash"/>&nbsp;Clear</button>
       <ol>
         {this.props.history.map((u, i) => <li key={i}><Entry url={u}/></li>)}

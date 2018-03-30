@@ -101,7 +101,7 @@ class App extends React.Component {
                    moveDown={this.props.moveURL.bind(undefined, 0, Math.min(Math.max(urls.length - 1, 0), 1))}/>
           </div> :
           null}
-        <h3 className="queue-title">Queue</h3>
+        <h1 className="queue-title">Queue</h1>
         {urls.slice(1).map((u, i) => {
           i += 1;
           return <Entry url={u} key={u + i} position={i}

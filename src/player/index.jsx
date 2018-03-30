@@ -3,12 +3,17 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 
 export const YOUTUBE_REGEX = /youtube\.com.*\?[^v\s]*v=(.+?)(?:&|$)/i;
 
 export function processVideoURL(url) {
-  let urlMatch = YOUTUBE_REGEX.exec(url);
-  return urlMatch[1];
+  let u = new URL(url);
+  return _(_.trimStart(u.search, '?')).split('&').reduce((o, l) => {
+    let [k, v] = _.split(l, '=');
+    o[k] = v;
+    return o;
+  }, {})['v'];
 }
 
 let loadYT;

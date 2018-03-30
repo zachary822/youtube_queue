@@ -11,7 +11,10 @@ module.exports = merge(common, {
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }
-    }),
-    new webpack.optimize.UglifyJsPlugin(),
-  ]
+    })
+  ],
+  mode: "production",
+  optimization: {
+    minimize: true
+  }
 });
