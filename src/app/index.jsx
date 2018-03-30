@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import Entry from "./entry";
 import History from "./history";
 import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
+import _ from 'lodash';
 
 import Player, {YOUTUBE_REGEX} from '../player';
 
@@ -23,10 +24,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       url: '',
-      showError: false,
-      ready: false,
-      data: {},
-      videoURL: ''
+      showError: false
     };
   }
 
@@ -48,27 +46,18 @@ class App extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    let code;
-    if (this.player) {
-      code = this.player.getPlayerState();
-    }
-    if (this.state.ready && this.player && typeof code === 'number' && (code !== 1 && code !== 3)) {
-      this.player.playVideo();
-    }
-  }
-
-  setReady(e, player) {
-    let data = player.getVideoData();
-    this.player = player;
-    this.setState({ready: true, data, videoURL: player.getVideoUrl()});
+  setReady(e) {
+    this.player = e.target;
+    this.player.playVideo();
   }
 
   setDone(e) {
     let code = e.data;
     if (code === 0) {
-      this.props.addHistory(this.state.videoURL);
+      this.props.addHistory(this.props.urls[0]);
       this.props.removeURL(0);
+    } else if (code < 0 || code > 3) {
+      e.target.playVideo();
     }
   }
 
@@ -79,6 +68,8 @@ class App extends React.Component {
 
   render() {
     let {urls} = this.props;
+    let clampPos = _.partial(_.clamp, _, 0, urls.length - 1);
+
     return <div>
       <div className="queue">
         <div className="url-input">
@@ -98,16 +89,16 @@ class App extends React.Component {
             <Entry url={urls[0]} position={0}
                    remove={this.removeAndAddHistory.bind(this)}
                    moveUp={this.props.moveURL.bind(undefined, 0, 0)}
-                   moveDown={this.props.moveURL.bind(undefined, 0, Math.min(Math.max(urls.length - 1, 0), 1))}/>
+                   moveDown={this.props.moveURL.bind(undefined, 0, clampPos(1))}/>
           </div> :
           null}
         <h1 className="queue-title">Queue</h1>
         {urls.slice(1).map((u, i) => {
           i += 1;
           return <Entry url={u} key={u + i} position={i}
-                        remove={this.props.removeURL.bind(undefined, i)}
-                        moveUp={this.props.moveURL.bind(undefined, i, Math.max(0, i - 1))}
-                        moveDown={this.props.moveURL.bind(undefined, i, Math.min(Math.max(urls.length - 1, 0), i + 1))}/>;
+                        remove={_.partial(this.props.removeURL, i)}
+                        moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
+                        moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
         })}
       </div>
       <History clearHistory={this.props.clearHistory} history={this.props.history}/>

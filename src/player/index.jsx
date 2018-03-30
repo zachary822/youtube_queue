@@ -3,18 +3,9 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
+import {processVideoURL} from "../utils";
 
 export const YOUTUBE_REGEX = /youtube\.com.*\?[^v\s]*v=(.+?)(?:&|$)/i;
-
-export function processVideoURL(url) {
-  let u = new URL(url);
-  return _(_.trimStart(u.search, '?')).split('&').reduce((o, l) => {
-    let [k, v] = _.split(l, '=');
-    o[k] = v;
-    return o;
-  }, {})['v'];
-}
 
 let loadYT;
 
@@ -60,7 +51,7 @@ class Player extends React.Component {
 
   onPlayerReady(e) {
     if (typeof this.props.onReady === 'function') {
-      this.props.onReady(e, this.player);
+      this.props.onReady(e);
     }
   }
 
