@@ -6,7 +6,7 @@ import {
 export default function (state = [], action) {
   switch (action.type) {
   case ADD_HISTORY:
-    return [...state, action.url];
+    return [...state, {time: Date.now(), url: action.url}];
   case CLEAR_HISTORY:
     return [];
   default:

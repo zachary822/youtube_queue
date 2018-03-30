@@ -22,7 +22,7 @@ class Entry extends React.Component {
   render() {
     return <div className="entry">
       <div className="entry-left">
-        {this.props.position + 1}. <a href={this.props.url}>{this.props.url}</a>
+        {this.props.position + 1}. <a href={this.props.url} rel="external noopener" target="_blank">{this.props.url}</a>
       </div>
       <div className="entry-right">
         <button onClick={this.props.remove} className="button"><i className="fas fa-minus" aria-label="remove"/></button>

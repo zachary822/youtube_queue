@@ -10,7 +10,7 @@ import History from "./history";
 import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
 import _ from 'lodash';
 
-import Player, {YOUTUBE_REGEX} from '../player';
+import Player from '../player';
 
 function mapStateToProps(state) {
   return {
@@ -35,10 +35,11 @@ class App extends React.Component {
   }
 
   addURL(e) {
+    let u = new URL(this.state.url);
     e.preventDefault();
-    if (YOUTUBE_REGEX.test(this.state.url)) {
+    if (/youtube\.com$/.test(u.hostname)) {
       this.props.addURL(this.state.url);
-      this.setState({url: ''});
+      this.setState({url: '', showError: false});
     } else {
       this.setState({
         showError: true
@@ -61,9 +62,11 @@ class App extends React.Component {
     }
   }
 
-  removeAndAddHistory() {
-    this.props.addHistory(this.props.urls[0]);
-    this.props.removeURL(0);
+  removeAndAddHistory(i) {
+    if (i === 0) {
+      this.props.addHistory(this.props.urls[i]);
+    }
+    this.props.removeURL(i);
   }
 
   render() {
@@ -71,44 +74,43 @@ class App extends React.Component {
     let clampPos = _.partial(_.clamp, _, 0, urls.length - 1);
 
     return <div>
-      <div className="queue">
-        <div className="url-input">
-          <form onSubmit={this.addURL.bind(this)}>
-            <label htmlFor="url">URL:</label>
-            <input type="text" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)} autoFocus/>
-            <button type="submit"><i className="fas fa-plus"/>&nbsp;Add</button>
-          </form>
+      <section>
+        <div className="queue">
+          <div className="url-input">
+            <form onSubmit={this.addURL.bind(this)}>
+              <label htmlFor="url">URL:</label>
+              <input type="text" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)}
+                     autoFocus/>
+              <button type="submit"><i className="fas fa-plus"/>&nbsp;Add</button>
+            </form>
+          </div>
+          {this.state.showError ?
+            <div>Not a Valid YouTube URL</div> :
+            null
+          }
+          {urls.length ?
+            <div>
+              <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
+            </div> :
+            null}
+          {_(urls).map((u, i) => {
+            return <Entry url={u} key={u + i} position={i}
+                          remove={this.removeAndAddHistory.bind(this, i)}
+                          moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
+                          moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
+          }).value()}
         </div>
-        {this.state.showError ?
-          <div>Not a Valid YouTube URL</div> :
-          null
-        }
-        {urls.length ?
-          <div>
-            <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
-            <Entry url={urls[0]} position={0}
-                   remove={this.removeAndAddHistory.bind(this)}
-                   moveUp={this.props.moveURL.bind(undefined, 0, 0)}
-                   moveDown={this.props.moveURL.bind(undefined, 0, clampPos(1))}/>
-          </div> :
-          null}
-        <h1 className="queue-title">Queue</h1>
-        {urls.slice(1).map((u, i) => {
-          i += 1;
-          return <Entry url={u} key={u + i} position={i}
-                        remove={_.partial(this.props.removeURL, i)}
-                        moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
-                        moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
-        })}
-      </div>
-      <History clearHistory={this.props.clearHistory} history={this.props.history}/>
+      </section>
+      <aside>
+        <History clearHistory={this.props.clearHistory} history={this.props.history}/>
+      </aside>
     </div>;
   }
 }
 
 App.propTypes = {
   urls: PropTypes.arrayOf(PropTypes.string),
-  history: PropTypes.arrayOf(PropTypes.string),
+  history: PropTypes.arrayOf(PropTypes.shape({time: PropTypes.number, url: PropTypes.string})),
   addURL: PropTypes.func,
   removeURL: PropTypes.func,
   moveURL: PropTypes.func,

@@ -5,8 +5,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {processVideoURL} from "../utils";
 
-export const YOUTUBE_REGEX = /youtube\.com.*\?[^v\s]*v=(.+?)(?:&|$)/i;
-
 let loadYT;
 
 class Player extends React.Component {

@@ -20,8 +20,8 @@ class Entry extends React.Component {
   }
 
   render() {
-    let {url} = this.props;
-    return <div><a href={url}>{url}</a>
+    let {url, time} = this.props;
+    return <div>{new Date(time).toLocaleString()} <a href={url}>{url}</a>
       <button ref={(c) => {
         this.copy = c;
       }}><i className="fas fa-clipboard"/></button>
@@ -30,16 +30,17 @@ class Entry extends React.Component {
 }
 
 Entry.propTypes = {
-  url: PropTypes.string
+  url: PropTypes.string,
+  time: PropTypes.number
 };
 
 class History extends React.Component {
   render() {
     return <div className="history">
-      <h1>History</h1>
+      <h2>History</h2>
       <button onClick={this.props.clearHistory}><i className="fas fa-trash"/>&nbsp;Clear</button>
       <ol>
-        {this.props.history.map((u, i) => <li key={i}><Entry url={u}/></li>)}
+        {this.props.history.map(({time, url}, i) => <li key={i}><Entry url={url} time={time}/></li>)}
       </ol>
     </div>;
   }
@@ -47,7 +48,7 @@ class History extends React.Component {
 
 History.propTypes = {
   clearHistory: PropTypes.func,
-  history: PropTypes.arrayOf(PropTypes.string)
+  history: PropTypes.arrayOf(PropTypes.shape({time: PropTypes.number, url: PropTypes.string}))
 };
 
 export default History;
