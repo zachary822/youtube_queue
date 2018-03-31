@@ -49,7 +49,6 @@ class App extends React.Component {
 
   setReady(e) {
     this.player = e.target;
-    this.player.playVideo();
   }
 
   setDone(e) {
@@ -57,8 +56,6 @@ class App extends React.Component {
     if (code === 0) {
       this.props.addHistory(this.props.urls[0]);
       this.props.removeURL(0);
-    } else if (code < 0 || code > 3) {
-      e.target.playVideo();
     }
   }
 

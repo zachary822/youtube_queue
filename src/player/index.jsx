@@ -23,6 +23,11 @@ class Player extends React.Component {
         height: this.props.height,
         width: this.props.width,
         videoId: processVideoURL(this.props.videoURL),
+        playerVars: {
+          autoplay: 1,
+          modestbranding: 1,
+          rel: 0
+        },
         events: {
           onReady: this.onPlayerReady.bind(this),
           onStateChange: this.onPlayerStateChange.bind(this)
