@@ -1,11 +1,11 @@
-input[type=text] {
-    width: 35em;
-}
-
 .url-input {
     float: left;
     margin: 1em;
     width: 100%;
+}
+
+.url-input input {
+    width: 35em;
 }
 
 .queue {

@@ -42,7 +42,10 @@ class App extends React.Component {
         this.props.addURL(this.state.url);
         this.setState({url: '', showError: false});
       } else {
-        throw 'Not youtube URL'
+        this.setState({
+          showError: true,
+          url: ''
+        });
       }
     } catch (e) {
       this.setState({
@@ -60,16 +63,21 @@ class App extends React.Component {
   setDone(e) {
     let code = e.data;
     if (code === 0) {
-      this.props.addHistory(this.props.urls[0]);
-      this.props.removeURL(0);
+      this.removeAndAddHistory(0);
     }
   }
 
-  removeAndAddHistory(i) {
-    if (i === 0) {
+  removeAndAddHistory(i, add = true) {
+    if (add) {
       this.props.addHistory(this.props.urls[i]);
     }
     this.props.removeURL(i);
+  }
+
+  nextVideo() {
+    if (this.props.urls.length > 1) {
+      this.removeAndAddHistory(0);
+    }
   }
 
   render() {
@@ -82,8 +90,8 @@ class App extends React.Component {
           <div className="url-input">
             <form onSubmit={this.addURL.bind(this)}>
               <label htmlFor="url">URL:</label>
-              <input type="text" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)}
-                     autoFocus/>
+              <input type="url" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)}
+                     autoFocus required/>
               <button type="submit"><i className="fas fa-plus"/>&nbsp;Add</button>
             </form>
           </div>
@@ -94,11 +102,12 @@ class App extends React.Component {
           {urls.length ?
             <div>
               <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
+              <button onClick={this.nextVideo.bind(this)}>next</button>
             </div> :
             null}
           {_(urls).map((u, i) => {
             return <Entry url={u} key={u + i} position={i}
-                          remove={this.removeAndAddHistory.bind(this, i)}
+                          remove={this.removeAndAddHistory.bind(this, i, i === 0)}
                           moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
                           moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
           }).value()}
