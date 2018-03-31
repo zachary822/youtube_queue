@@ -35,16 +35,22 @@ class App extends React.Component {
   }
 
   addURL(e) {
-    let u = new URL(this.state.url);
     e.preventDefault();
-    if (/youtube\.com$/.test(u.hostname)) {
-      this.props.addURL(this.state.url);
-      this.setState({url: '', showError: false});
-    } else {
+    try {
+      let u = new URL(this.state.url);
+      if (/youtube\.com$/.test(u.hostname)) {
+        this.props.addURL(this.state.url);
+        this.setState({url: '', showError: false});
+      } else {
+        throw 'Not youtube URL'
+      }
+    } catch (e) {
       this.setState({
-        showError: true
+        showError: true,
+        url: ''
       });
     }
+
   }
 
   setReady(e) {
@@ -99,7 +105,7 @@ class App extends React.Component {
         </div>
       </section>
       <aside>
-        <History clearHistory={this.props.clearHistory} history={this.props.history}/>
+        <History clearHistory={this.props.clearHistory} history={this.props.history} addURL={this.props.addURL}/>
       </aside>
     </div>;
   }
