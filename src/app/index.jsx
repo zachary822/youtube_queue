@@ -9,6 +9,7 @@ import Entry from "./entry";
 import History from "./history";
 import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
 import _ from 'lodash';
+import {v4} from 'uuid';
 
 import Player from '../player';
 
@@ -106,7 +107,7 @@ class App extends React.Component {
             </div> :
             null}
           {_(urls).map((u, i) => {
-            return <Entry url={u} key={u + i} position={i}
+            return <Entry url={u} key={v4()} position={i}
                           remove={this.removeAndAddHistory.bind(this, i, i === 0)}
                           moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
                           moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
