@@ -10,31 +10,12 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducers from './reducers';
 import _ from 'lodash';
+import {loadState, saveState} from "./localstorage";
+import './fontawesome';
 
 import './styles/styles.css';
 
 import App from './app';
-
-function loadState() {
-  try {
-    const serializedState = localStorage.getItem('state');
-    if (serializedState === null) {
-      return undefined;
-    }
-    return JSON.parse(serializedState);
-  } catch (e) {
-    return undefined;
-  }
-}
-
-function saveState(state) {
-  try {
-    const serilizedState = JSON.stringify(state);
-    localStorage.setItem('state', serilizedState);
-  } catch (e) {
-    console.log(e);
-  }
-}
 
 const store = createStore(
   reducers,
