@@ -7,6 +7,7 @@
     "start": "webpack-dev-server -d --config webpack.dev.js",
     "build": "webpack --config webpack.production.js"
   },
+  "repository": "https://github.com/zachary822/youtube_queue.git",
   "author": "Zachary Juang",
   "license": "MIT",
   "dependencies": {
@@ -21,8 +22,8 @@
     "lodash": "^4.17.5",
     "parseurl": "^1.3.2",
     "prop-types": "^15.6.1",
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "uuid": "^3.2.1"

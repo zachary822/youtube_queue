@@ -9,7 +9,6 @@ import Entry from "./entry";
 import History from "./history";
 import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
 import _ from 'lodash';
-import {v4} from 'uuid';
 
 import Player from '../player';
 
@@ -40,7 +39,7 @@ class App extends React.Component {
     try {
       let u = new URL(this.state.url);
       if (/youtube\.com$/.test(u.hostname)) {
-        this.props.addURL(this.state.url);
+        this.props.addURL(u.toString());
         this.setState({url: '', showError: false});
       } else {
         this.setState({
@@ -107,7 +106,10 @@ class App extends React.Component {
             </div> :
             null}
           {_(urls).map((u, i) => {
-            return <Entry url={u} key={v4()} position={i}
+            let url = new URL(u);
+            url.hash = '';
+
+            return <Entry url={url.toString()} key={u} position={i}
                           remove={this.removeAndAddHistory.bind(this, i, i === 0)}
                           moveUp={_.partial(this.props.moveURL, i, clampPos(i - 1))}
                           moveDown={_.partial(this.props.moveURL, i, clampPos(i + 1))}/>;
