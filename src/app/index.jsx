@@ -3,11 +3,12 @@
  * 1/18/18
  */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Entry from "./entry";
 import History from "./history";
-import {addURL, removeURL, moveURL, addHistory, clearHistory} from '../actions';
+import {addURL, removeURL, moveURL, addHistory, clearHistory, toggleReplay} from '../actions';
 import _ from 'lodash';
 
 import Player from '../player';
@@ -15,7 +16,8 @@ import Player from '../player';
 function mapStateToProps(state) {
   return {
     urls: state.queue,
-    history: state.history
+    history: state.history,
+    replay: state.replay
   };
 }
 
@@ -26,6 +28,7 @@ class App extends React.Component {
       url: '',
       showError: false
     };
+    this.replayButton = React.createRef();
   }
 
   setURL(e) {
@@ -61,9 +64,16 @@ class App extends React.Component {
   }
 
   setDone(e) {
+    let {replay} = this.props;
     let code = e.data;
     if (code === 0) {
-      this.removeAndAddHistory(0);
+      if (replay) {
+        console.log('hmm');
+        e.target.seekTo(0);
+        e.target.playVideo();
+      } else {
+        this.removeAndAddHistory(0);
+      }
     }
   }
 
@@ -77,6 +87,16 @@ class App extends React.Component {
   nextVideo() {
     if (this.props.urls.length > 1) {
       this.removeAndAddHistory(0);
+    }
+  }
+
+  getReplayColor() {
+    return this.props.replay ? 'black' : 'lightgrey';
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.replay !== this.props.replay) {
+      ReactDOM.findDOMNode(this.replayButton.current).querySelector('[data-fa-i2svg]').style.color = this.getReplayColor();
     }
   }
 
@@ -102,7 +122,13 @@ class App extends React.Component {
           {urls.length ?
             <div>
               <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
-              <button onClick={this.nextVideo.bind(this)}>next</button>
+              <button onClick={this.nextVideo.bind(this)}><i className="fas fa-step-forward"/>&nbsp;next</button>
+              <div style={{display: 'inline', color: this.getReplayColor()}}>
+                <button onClick={this.props.toggleReplay} ref={this.replayButton}>
+                  <i className="fas fa-redo" style={{color: this.getReplayColor()}}/>&nbsp;replay
+                </button>
+              </div>
+
             </div> :
             null}
           {_(urls).map((u, i) => {
@@ -130,7 +156,9 @@ App.propTypes = {
   removeURL: PropTypes.func,
   moveURL: PropTypes.func,
   addHistory: PropTypes.func,
-  clearHistory: PropTypes.func
+  clearHistory: PropTypes.func,
+  toggleReplay: PropTypes.func,
+  replay: PropTypes.bool
 };
 
-export default connect(mapStateToProps, {addURL, removeURL, moveURL, addHistory, clearHistory})(App);
+export default connect(mapStateToProps, {addURL, removeURL, moveURL, addHistory, clearHistory, toggleReplay})(App);

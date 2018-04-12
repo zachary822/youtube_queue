@@ -7,7 +7,9 @@ import {
   REMOVE_URL,
   MOVE_URL,
   ADD_HISTORY,
-  CLEAR_HISTORY
+  CLEAR_HISTORY,
+  SET_REPLAY,
+  TOGGLE_REPLAY
 } from './types';
 
 export function addURL(url) {
@@ -48,5 +50,18 @@ export function addHistory(url) {
 export function clearHistory() {
   return {
     type: CLEAR_HISTORY
+  }
+}
+
+export function setReplay(replay) {
+  return {
+    type: SET_REPLAY,
+    replay
+  }
+}
+
+export function toggleReplay() {
+  return {
+    type: TOGGLE_REPLAY
   }
 }

@@ -6,3 +6,5 @@ export const REMOVE_URL = 'REMOVE_URL';
 export const MOVE_URL = 'MOVE_URL';
 export const ADD_HISTORY = 'ADD_HISTORY';
 export const CLEAR_HISTORY = 'CLEAR_HISTORY';
+export const SET_REPLAY = 'SET_REPLAY';
+export const TOGGLE_REPLAY = 'TOGGLE_REPLAY';
