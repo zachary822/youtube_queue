@@ -3,12 +3,20 @@
  * 1/18/18
  */
 import React from 'react';
-import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import Entry from "./entry";
 import History from "./history";
-import {addURL, removeURL, moveURL, addHistory, clearHistory, toggleReplay} from '../actions';
+import {
+  addURL,
+  addURLPosition,
+  removeURL,
+  moveURL,
+  addHistory,
+  clearHistory,
+  removeHistory,
+  toggleReplay
+} from '../actions';
 import _ from 'lodash';
 
 import Player from '../player';
@@ -68,7 +76,6 @@ class App extends React.Component {
     let code = e.data;
     if (code === 0) {
       if (replay) {
-        console.log('hmm');
         e.target.seekTo(0);
         e.target.playVideo();
       } else {
@@ -90,13 +97,19 @@ class App extends React.Component {
     }
   }
 
+  prevVideo() {
+    let {history, addURLPosition, removeHistory} = this.props;
+    addURLPosition(history[history.length - 1].url, 0);
+    removeHistory(history.length - 1)
+  }
+
   getReplayColor() {
     return this.props.replay ? 'black' : 'lightgrey';
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.replay !== this.props.replay) {
-      ReactDOM.findDOMNode(this.replayButton.current).querySelector('[data-fa-i2svg]').style.color = this.getReplayColor();
+      this.replayButton.current.querySelector('[data-fa-i2svg]').style.color = this.getReplayColor();
     }
   }
 
@@ -122,6 +135,7 @@ class App extends React.Component {
           {urls.length ?
             <div>
               <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
+              <button onClick={this.prevVideo.bind(this)}><i className="fa fa-step-backward"/>&nbsp;previous</button>
               <button onClick={this.nextVideo.bind(this)}><i className="fas fa-step-forward"/>&nbsp;next</button>
               <div style={{display: 'inline', color: this.getReplayColor()}}>
                 <button onClick={this.props.toggleReplay} ref={this.replayButton}>
@@ -153,12 +167,23 @@ App.propTypes = {
   urls: PropTypes.arrayOf(PropTypes.string),
   history: PropTypes.arrayOf(PropTypes.shape({time: PropTypes.number, url: PropTypes.string})),
   addURL: PropTypes.func,
+  addURLPosition: PropTypes.func,
   removeURL: PropTypes.func,
   moveURL: PropTypes.func,
   addHistory: PropTypes.func,
   clearHistory: PropTypes.func,
+  removeHistory: PropTypes.func,
   toggleReplay: PropTypes.func,
   replay: PropTypes.bool
 };
 
-export default connect(mapStateToProps, {addURL, removeURL, moveURL, addHistory, clearHistory, toggleReplay})(App);
+export default connect(mapStateToProps, {
+  addURL,
+  addURLPosition,
+  removeURL,
+  moveURL,
+  addHistory,
+  clearHistory,
+  removeHistory,
+  toggleReplay
+})(App);

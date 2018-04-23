@@ -10,6 +10,7 @@ import faCaretDown from '@fortawesome/fontawesome-free-solid/faCaretDown';
 import faClipboard from '@fortawesome/fontawesome-free-solid/faClipboard';
 import faTrash from '@fortawesome/fontawesome-free-solid/faTrash';
 import faStepForward from '@fortawesome/fontawesome-free-solid/faStepForward';
+import faStepBackward from '@fortawesome/fontawesome-free-solid/faStepBackward';
 import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
 
 fontawesome.library.add(faPlus);
@@ -19,4 +20,5 @@ fontawesome.library.add(faCaretDown);
 fontawesome.library.add(faClipboard);
 fontawesome.library.add(faTrash);
 fontawesome.library.add(faStepForward);
+fontawesome.library.add(faStepBackward);
 fontawesome.library.add(faRedo);
