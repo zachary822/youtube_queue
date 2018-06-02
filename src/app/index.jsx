@@ -91,16 +91,20 @@ class App extends React.Component {
     this.props.removeURL(i);
   }
 
-  nextVideo() {
+  nextVideo(add = true) {
     if (this.props.urls.length > 1) {
-      this.removeAndAddHistory(0);
+      this.removeAndAddHistory(0, add);
     }
   }
 
   prevVideo() {
     let {history, addURLPosition, removeHistory} = this.props;
     addURLPosition(history[history.length - 1].url, 0);
-    removeHistory(history.length - 1)
+    removeHistory(history.length - 1);
+  }
+
+  handleVideoError(e) {
+    this.nextVideo(false);
   }
 
   getReplayColor() {
@@ -134,7 +138,8 @@ class App extends React.Component {
           }
           {urls.length ?
             <div>
-              <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}/>
+              <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}
+                      onError={this.handleVideoError.bind(this)}/>
               <button onClick={this.prevVideo.bind(this)}><i className="fa fa-step-backward"/>&nbsp;previous</button>
               <button onClick={this.nextVideo.bind(this)}><i className="fas fa-step-forward"/>&nbsp;next</button>
               <div style={{display: 'inline', color: this.getReplayColor()}}>

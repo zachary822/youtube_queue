@@ -30,7 +30,8 @@ class Player extends React.Component {
         },
         events: {
           onReady: this.onPlayerReady.bind(this),
-          onStateChange: this.onPlayerStateChange.bind(this)
+          onStateChange: this.onPlayerStateChange.bind(this),
+          onError: this.onPlayerError.bind(this)
         }
       });
     });
@@ -58,6 +59,12 @@ class Player extends React.Component {
     }
   }
 
+  onPlayerError(e) {
+    if (typeof this.props.onReady === 'function') {
+      this.props.onError(e);
+    }
+  }
+
   render() {
     return (
       <section className='youtubeComponent-wrapper'>
@@ -74,7 +81,8 @@ Player.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   onStateChange: PropTypes.func,
-  onReady: PropTypes.func
+  onReady: PropTypes.func,
+  onError: PropTypes.func
 };
 
 Player.defaultProps = {
