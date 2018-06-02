@@ -28,12 +28,18 @@
 .entry {
     clear: both;
     float: left;
+    width: 50%;
 }
 
 .entry-left {
     float: left;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .entry-right {
     float: right;
+    width: 20%;
 }
