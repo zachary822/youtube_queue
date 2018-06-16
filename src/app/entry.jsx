@@ -7,8 +7,13 @@ import PropTypes from 'prop-types';
 import Clipboard from 'clipboard';
 
 class Entry extends React.Component {
+  constructor(props) {
+    super(props);
+    this.copy = React.createRef();
+  }
+
   componentDidMount() {
-    this.clipboard = new Clipboard(this.copy, {
+    this.clipboard = new Clipboard(this.copy.current, {
       text: () => {
         return this.props.url;
       }
@@ -20,17 +25,20 @@ class Entry extends React.Component {
   }
 
   render() {
+    let {position, url} = this.props;
+
     return <div className="entry">
       <div className="entry-left">
-        {this.props.position + 1}. <a href={this.props.url} rel="external noopener" target="_blank">{this.props.url}</a>
+        {position + 1}. <a href={url} rel="external noopener" target="_blank">{url}</a>
       </div>
       <div className="entry-right">
-        <button onClick={this.props.remove} className="button"><i className="fas fa-minus" aria-label="remove"/></button>
-        <button onClick={this.props.moveUp} className="button"><i className="fas fa-caret-up" aria-label="up"/></button>
-        <button onClick={this.props.moveDown} className="button"><i className="fas fa-caret-down" aria-label="down"/></button>
-        <button ref={(c) => {
-          this.copy = c;
-        }}><i className="fas fa-clipboard" aria-label="copy"/></button>
+        <button onClick={this.props.remove} className="button"><i className="fas fa-minus" aria-label="remove"/>
+        </button>
+        <button onClick={this.props.moveUp} className="button" style={{color: position ? 'black' : 'lightgrey'}}>
+          <i className="fas fa-caret-up" aria-label="up"/></button>
+        <button onClick={this.props.moveDown} className="button"><i className="fas fa-caret-down" aria-label="down"/>
+        </button>
+        <button ref={this.copy}><i className="fas fa-clipboard" aria-label="copy"/></button>
       </div>
     </div>;
   }

@@ -8,6 +8,11 @@ import {processVideoURL} from "../utils";
 let loadYT;
 
 class Player extends React.Component {
+  constructor (props) {
+    super(props);
+    this.youtubePlayerAnchor = React.createRef();
+  }
+
   componentDidMount() {
     if (!loadYT) {
       loadYT = new Promise((resolve) => {
@@ -19,7 +24,7 @@ class Player extends React.Component {
       });
     }
     loadYT.then((YT) => {
-      this.player = new YT.Player(this.youtubePlayerAnchor, {
+      this.player = new YT.Player(this.youtubePlayerAnchor.current, {
         height: this.props.height,
         width: this.props.width,
         videoId: processVideoURL(this.props.videoURL),
@@ -68,9 +73,7 @@ class Player extends React.Component {
   render() {
     return (
       <section className='youtubeComponent-wrapper'>
-        <div ref={(r) => {
-          this.youtubePlayerAnchor = r;
-        }}/>
+        <div ref={this.youtubePlayerAnchor}/>
       </section>
     );
   }
