@@ -10,12 +10,14 @@ import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducers from './reducers';
 import _ from 'lodash';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {loadState, saveState} from "./localstorage";
 import './fontawesome';
 
 import './styles/styles.css';
 
 import App from './app';
+import NoPage from './no_page';
 
 const store = createStore(
   reducers,
@@ -29,7 +31,12 @@ store.subscribe(_.debounce(function () {
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={App}/>
+        <Route component={NoPage}/>
+      </Switch>
+    </BrowserRouter>
   </Provider>,
   document.getElementById('app')
 );
