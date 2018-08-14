@@ -5,6 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Clipboard from 'clipboard';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class Entry extends React.Component {
   componentDidMount() {
@@ -24,8 +25,8 @@ class Entry extends React.Component {
     return <div>{new Date(time).toLocaleString()} <a href={url}>{url}</a>
       <button ref={(c) => {
         this.copy = c;
-      }}><i className="fas fa-clipboard"/></button>
-      <button onClick={addURL.bind(undefined, url)}><i className="fas fa-plus"/></button>
+      }}><FontAwesomeIcon icon="clipboard"/></button>
+      <button onClick={addURL.bind(undefined, url)}><FontAwesomeIcon icon="plus"/></button>
     </div>;
   }
 }
@@ -40,7 +41,7 @@ class History extends React.Component {
   render() {
     return <div className="history">
       <h2>History</h2>
-      <button onClick={this.props.clearHistory}><i className="fas fa-trash"/>&nbsp;Clear</button>
+      <button onClick={this.props.clearHistory}><FontAwesomeIcon icon="trash"/>&nbsp;Clear</button>
       <ol>
         {this.props.history.map(({time, url}, i) => <li key={i}><Entry url={url} time={time}
                                                                        addURL={this.props.addURL}/></li>)}

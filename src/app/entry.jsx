@@ -5,6 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Clipboard from 'clipboard';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class Entry extends React.Component {
   constructor(props) {
@@ -29,16 +30,16 @@ class Entry extends React.Component {
 
     return <div className="entry">
       <div className="entry-left">
-        {position + 1}. <a href={url} rel="external noopener" target="_blank">{url}</a>
+        {position + 1}. <a href={url} target="_blank" rel="external noopener noreferrer">{url}</a>
       </div>
       <div className="entry-right">
-        <button onClick={this.props.remove} className="button"><i className="fas fa-minus" aria-label="remove"/>
+        <button onClick={this.props.remove} className="button"><FontAwesomeIcon icon="minus"/>
         </button>
         <button onClick={this.props.moveUp} className="button" style={{color: position ? 'black' : 'lightgrey'}}>
-          <i className="fas fa-caret-up" aria-label="up"/></button>
-        <button onClick={this.props.moveDown} className="button"><i className="fas fa-caret-down" aria-label="down"/>
+          <FontAwesomeIcon icon="caret-up"/></button>
+        <button onClick={this.props.moveDown} className="button"><FontAwesomeIcon icon="caret-down"/>
         </button>
-        <button ref={this.copy}><i className="fas fa-clipboard" aria-label="copy"/></button>
+        <button ref={this.copy}><FontAwesomeIcon icon="clipboard"/></button>
       </div>
     </div>;
   }

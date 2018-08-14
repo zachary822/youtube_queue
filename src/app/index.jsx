@@ -5,6 +5,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Entry from "./entry";
 import History from "./history";
 import {
@@ -34,7 +35,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       url: '',
-      showError: false
+      showError: false,
+      ready: false
     };
     this.replayButton = React.createRef();
   }
@@ -69,6 +71,14 @@ class App extends React.Component {
 
   setReady(e) {
     this.player = e.target;
+    this.setState({ready: true});
+  }
+
+  restartVideo() {
+    if (this.player) {
+      this.player.seekTo(0);
+      this.player.playVideo();
+    }
   }
 
   setDone(e) {
@@ -111,12 +121,6 @@ class App extends React.Component {
     return this.props.replay ? 'black' : 'lightgrey';
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.replay !== this.props.replay) {
-      this.replayButton.current.querySelector('[data-fa-i2svg]').style.color = this.getReplayColor();
-    }
-  }
-
   render() {
     let {urls} = this.props;
     let clampPos = _.partial(_.clamp, _, 0, urls.length - 1);
@@ -129,7 +133,7 @@ class App extends React.Component {
               <label htmlFor="url">URL:</label>
               <input type="url" name="url" id="url" value={this.state.url} onChange={this.setURL.bind(this)}
                      autoFocus required/>
-              <button type="submit"><i className="fas fa-plus"/>&nbsp;Add</button>
+              <button type="submit"><FontAwesomeIcon icon="plus"/>&nbsp;Add</button>
             </form>
           </div>
           {this.state.showError ?
@@ -140,11 +144,12 @@ class App extends React.Component {
             <div>
               <Player videoURL={urls[0]} onReady={this.setReady.bind(this)} onStateChange={this.setDone.bind(this)}
                       onError={this.handleVideoError.bind(this)}/>
-              <button onClick={this.prevVideo.bind(this)}><i className="fa fa-step-backward"/>&nbsp;previous</button>
-              <button onClick={this.nextVideo.bind(this)}><i className="fas fa-step-forward"/>&nbsp;next</button>
+              <button onClick={this.prevVideo.bind(this)}><FontAwesomeIcon icon="step-backward"/>&nbsp;previous</button>
+              <button onClick={this.nextVideo.bind(this)}><FontAwesomeIcon icon="step-forward"/>&nbsp;next</button>
+              <button onClick={this.restartVideo.bind(this)}><FontAwesomeIcon icon="fast-backward"/>&nbsp;restart</button>
               <div style={{display: 'inline', color: this.getReplayColor()}}>
-                <button onClick={this.props.toggleReplay} ref={this.replayButton}>
-                  <i className="fas fa-redo" style={{color: this.getReplayColor()}}/>&nbsp;replay
+                <button onClick={this.props.toggleReplay}>
+                  <FontAwesomeIcon icon="redo" style={{color: this.getReplayColor()}}/>&nbsp;replay
                 </button>
               </div>
 
