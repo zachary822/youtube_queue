@@ -1,8 +1,4 @@
-import {
-  ADD_HISTORY,
-  CLEAR_HISTORY,
-  REMOVE_HISTORY
-} from '../types';
+import {ADD_HISTORY, CLEAR_HISTORY, REMOVE_HISTORY} from '../types';
 
 export default function (state = [], action) {
   switch (action.type) {

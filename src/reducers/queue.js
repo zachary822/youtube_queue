@@ -1,9 +1,4 @@
-import {
-  ADD_URL,
-  ADD_URL_POSITION,
-  REMOVE_URL,
-  MOVE_URL
-} from '../types';
+import {ADD_URL, ADD_URL_POSITION, MOVE_URL, REMOVE_URL} from '../types';
 
 export default function (state = [], action) {
   switch (action.type) {
@@ -20,7 +15,7 @@ export default function (state = [], action) {
         state[action.source],
         ...state.slice(action.target, action.source),
         ...state.slice(action.source + 1)
-      ]
+      ];
     }
     return [
       ...state.slice(0, action.source),

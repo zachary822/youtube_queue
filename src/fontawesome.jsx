@@ -4,16 +4,16 @@
  */
 import {library} from '@fortawesome/fontawesome-svg-core';
 import {
-  faPlus,
-  faMinus,
-  faCaretUp,
   faCaretDown,
+  faCaretUp,
   faClipboard,
-  faTrash,
-  faStepForward,
-  faStepBackward,
+  faFastBackward,
+  faMinus,
+  faPlus,
   faRedo,
-  faFastBackward
+  faStepBackward,
+  faStepForward,
+  faTrash
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(

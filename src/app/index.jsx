@@ -9,13 +9,13 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import Entry from "./entry";
 import History from "./history";
 import {
+  addHistory,
   addURL,
   addURLPosition,
-  removeURL,
-  moveURL,
-  addHistory,
   clearHistory,
+  moveURL,
   removeHistory,
+  removeURL,
   toggleReplay
 } from '../actions';
 import _ from 'lodash';
@@ -146,7 +146,8 @@ class App extends React.Component {
                       onError={this.handleVideoError.bind(this)}/>
               <button onClick={this.prevVideo.bind(this)}><FontAwesomeIcon icon="step-backward"/>&nbsp;previous</button>
               <button onClick={this.nextVideo.bind(this)}><FontAwesomeIcon icon="step-forward"/>&nbsp;next</button>
-              <button onClick={this.restartVideo.bind(this)}><FontAwesomeIcon icon="fast-backward"/>&nbsp;restart</button>
+              <button onClick={this.restartVideo.bind(this)}><FontAwesomeIcon icon="fast-backward"/>&nbsp;restart
+              </button>
               <div style={{display: 'inline', color: this.getReplayColor()}}>
                 <button onClick={this.props.toggleReplay}>
                   <FontAwesomeIcon icon="redo" style={{color: this.getReplayColor()}}/>&nbsp;replay

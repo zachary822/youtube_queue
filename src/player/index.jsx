@@ -8,7 +8,7 @@ import {processVideoURL} from "../utils";
 let loadYT;
 
 class Player extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.youtubePlayerAnchor = React.createRef();
   }

@@ -9,7 +9,7 @@ class NoPage extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.props.history.push('/');
-    }, 3000)
+    }, 3000);
   }
 
   render() {
