@@ -1,17 +1,11 @@
 {
   "presets": [
-    [
-      "env",
-      {
-        "modules": false,
-        "useBuiltIns": true
-      }
-    ],
-    "react"
+    "@babel/env",
+    "@babel/react"
   ],
   "plugins": [
     [
-      "transform-object-rest-spread",
+      "@babel/plugin-proposal-object-rest-spread",
       {
         "useBuiltIns": true
       }
